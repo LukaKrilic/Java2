@@ -5,6 +5,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceDialog;
 
+import java.util.Collection;
 import java.util.Optional;
 
 public class DialogUtils {
@@ -35,4 +36,11 @@ public class DialogUtils {
         return alert.showAndWait().filter(ButtonType.OK::equals).isPresent();
     }
 
+    public static Optional<String> chooseOpponentDialog(Collection<String> playerNames) {
+        ChoiceDialog<String> dialog = new ChoiceDialog<>(playerNames.iterator().next(), playerNames);
+        dialog.setTitle("Odabir suigraca");
+        dialog.setHeaderText("Dostupni suigraci");
+        dialog.setContentText("Suigrac:");
+        return dialog.showAndWait();
+    }
 }

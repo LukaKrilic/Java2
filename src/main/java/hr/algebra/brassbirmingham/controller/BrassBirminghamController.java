@@ -4,6 +4,7 @@ import hr.algebra.brassbirmingham.BrassBirminghamApplication;
 import hr.algebra.brassbirmingham.engine.GameEngine;
 import hr.algebra.brassbirmingham.model.*;
 import hr.algebra.brassbirmingham.rmi.ChatRemoteService;
+import hr.algebra.brassbirmingham.rmi.LobbyRemoteService;
 import hr.algebra.brassbirmingham.rmi.RMIServer;
 import hr.algebra.brassbirmingham.thread.ReadTheLastGameMoveThread;
 import hr.algebra.brassbirmingham.thread.SaveTheLastGameMoveThread;
@@ -41,6 +42,7 @@ public class BrassBirminghamController {
 
     @FXML
     public MenuItem loadMovesItem;
+    public MenuItem chooseOpponentItem;
     @FXML
     private Pane mapPane;
 
@@ -77,6 +79,8 @@ public class BrassBirminghamController {
     private ChatRemoteService chatRemoteService;
 
     private boolean movesThroughFile;
+    
+    private LobbyRemoteService lobbyRemoteService;
 
     @FXML
     private void initialize() {
@@ -113,6 +117,7 @@ public class BrassBirminghamController {
             });
 
         connectToChat();
+        connectToLobby();
 
         if (BrassBirminghamApplication.playerType == PlayerType.SINGLE_PLAYER) {
             movesThroughFile = true;
@@ -124,6 +129,26 @@ public class BrassBirminghamController {
         loadMovesItem.setDisable(!movesThroughFile);
 
         startSession(GameUtils.newGame());
+    }
+
+    private void connectToLobby() {
+        if (BrassBirminghamApplication.playerType == PlayerType.SINGLE_PLAYER) {
+            chooseOpponentItem.setDisable(true);
+            return;
+        }
+        try {
+            Registry registry = LocateRegistry.getRegistry(RMIServer.HOSTNAME, RMIServer.RMI_PORT);
+            lobbyRemoteService = (LobbyRemoteService)
+                    registry.lookup(LobbyRemoteService.REMOTE_OBJECT_NAME);
+            lobbyRemoteService.register(
+                    BrassBirminghamApplication.playerType.name(),
+                    BrassBirminghamApplication.localPort());
+        } catch (RemoteException | NotBoundException e) {
+            lobbyRemoteService = null;
+            chooseOpponentItem.setDisable(true);
+            Logger.getLogger(BrassBirminghamController.class.getName())
+                    .log(Level.WARNING, "Lobby unavailable", e);
+        }
     }
 
     private void connectToChat() {
@@ -236,13 +261,7 @@ public class BrassBirminghamController {
         if (BrassBirminghamApplication.playerType == PlayerType.SINGLE_PLAYER) {
             return;
         }
-        new Thread(() ->{
-            if (BrassBirminghamApplication.playerType == PlayerType.PLAYER_1) {
-                BrassBirminghamApplication.sendRequestPlayerOne(state);
-            } else if (BrassBirminghamApplication.playerType == PlayerType.PLAYER_2) {
-                BrassBirminghamApplication.sendRequestPlayerTwo(state);
-            }
-        }).start();
+        new Thread(() -> BrassBirminghamApplication.sendGameState(state)).start();
     }
 
     private void promptBuild(Slot slot) {
@@ -429,6 +448,31 @@ public class BrassBirminghamController {
         } catch (ParserConfigurationException | IOException | SAXException e) {
             DialogUtils.showAlertDialog("Greska prilikom ucitavanja poteza",
                     e.getMessage(), Alert.AlertType.ERROR);
+        }
+    }
+
+    public void chooseOpponent(ActionEvent actionEvent) {
+        if (lobbyRemoteService == null) {
+            return;
+        }
+        try {
+            Map<String, Integer> players = new TreeMap<>(lobbyRemoteService.getAvailablePlayers());
+            players.remove(BrassBirminghamApplication.playerType.name());
+
+            if (players.isEmpty()) {
+                DialogUtils.showAlertDialog("Odabir suigraca",
+                        "Trenutno nema dostupnih suigraca.", Alert.AlertType.INFORMATION);
+                return;
+            }
+
+            DialogUtils.chooseOpponentDialog(players.keySet()).ifPresent(name -> {
+                BrassBirminghamApplication.opponentPort = players.get(name);
+                DialogUtils.showAlertDialog("Odabir suigraca",
+                        "Odabrani suigrac: " + name, Alert.AlertType.INFORMATION);
+            });
+        } catch (RemoteException e) {
+            DialogUtils.showAlertDialog("Odabir suigraca",
+                    "Lobby nije dostupan: " + e.getMessage(), Alert.AlertType.ERROR);
         }
     }
 }
