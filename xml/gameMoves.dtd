@@ -1,0 +1,13 @@
+<!ELEMENT gameMoves (build | link | sell | loan | pass)*>
+<!ELEMENT build (player, city, slotIndex, industryType)>
+<!ELEMENT link (player, fromCity, toCity)>
+<!ELEMENT sell (player, city, slotIndex)>
+<!ELEMENT loan (player)>
+<!ELEMENT pass (player)>
+
+<!ELEMENT player (#PCDATA)>
+<!ELEMENT city (#PCDATA)>
+<!ELEMENT slotIndex (#PCDATA)>
+<!ELEMENT industryType (#PCDATA)>
+<!ELEMENT fromCity (#PCDATA)>
+<!ELEMENT toCity (#PCDATA)>

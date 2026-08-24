@@ -1,0 +1,294 @@
+.root {
+    -soot: #241c15;
+    -panel: #33281d;
+    -panel-raised: #43331f;
+    -brass: #c8a44a;
+    -brass-dim: #8c7020;
+    -parchment: #efe4cc;
+    -parchment-dim: #bfb193;
+    -ink: #2a2118;
+    -city-fill:  #f7efdc;
+    -route-free: #b3a68c;
+    -coal:       #3c3c3c;
+    -iron:       #8a4b2a;
+    -cotton:     #e8e2d0;
+    -player-1:   #c8a44a;
+    -player-2:   #4e7c7c;
+
+    -fx-background-color: -soot;
+    -fx-font-family: "Segoe UI", "Sans Serif";
+    -fx-font-size: 13px;
+}
+
+.map-pane {
+    -fx-background-color: -parchment;
+    -fx-border-color: -brass-dim;
+    -fx-border-width: 2px;
+}
+.map-pane:disabled{
+    -fx-opacity: 0.65;
+}
+
+/* cities --------------------------------------------------- */
+
+.city {
+    -fx-fill: -city-fill;
+    -fx-stroke: -brass-dim;
+    -fx-stroke-width: 2px;
+    -fx-cursor: hand;
+}
+
+.city.market {                      /* Birmingham: ringed in brass */
+    -fx-stroke: -brass;
+    -fx-stroke-width: 4px;
+}
+
+.city:hover {
+    -fx-fill: derive(-city-fill, -8%);
+}
+
+.city-label {
+    -fx-text-fill: -ink;            /* Label, so text-fill */
+    -fx-font: bold 11px "Segoe UI";
+}
+
+/* canal routes --------------------------------------------- */
+
+.route   {
+    -fx-stroke: -route-free;
+    -fx-stroke-width: 5px;
+    -fx-stroke-dash-array: 9 7;
+    -fx-stroke-line-cap: round;
+    -fx-cursor: hand;
+}
+
+.route:hover {
+    -fx-stroke: -brass;
+    -fx-stroke-dash-array: null;
+    -fx-stroke-width: 7px;
+}
+
+.route-built {
+    -fx-stroke-width: 8px;
+    -fx-stroke-line-cap: round;
+    -fx-stroke-dash-array: null;
+    -fx-cursor: default;
+}
+
+.route-built.owner-1 { -fx-stroke: -player-1; }
+.route-built.owner-2 { -fx-stroke: -player-2; }
+
+/* industry slots ------------------------------------------- */
+
+.slot {
+    -fx-arc-width: 3px;
+    -fx-arc-height: 3px;
+    -fx-cursor: hand;
+}
+
+.slot.empty {
+    -fx-fill: rgba(255, 255, 255, 0.55);
+    -fx-stroke: -route-free;
+    -fx-stroke-width: 1px;
+}
+
+.slot.filled       { -fx-stroke-width: 2px; }
+.slot.owner-1      { -fx-stroke: -player-1; }
+.slot.owner-2      { -fx-stroke: -player-2; }
+
+.slot.coal-mine    { -fx-fill: -coal; }
+.slot.iron-works   { -fx-fill: -iron; }
+.slot.cotton-mill  { -fx-fill: -cotton; }
+
+/* flipped = spent/sold, rendered darker */
+.slot.flipped.coal-mine   { -fx-fill: derive(-coal,   -25%); }
+.slot.flipped.iron-works  { -fx-fill: derive(-iron,   -25%); }
+.slot.flipped.cotton-mill { -fx-fill: derive(-cotton, -25%); }
+
+
+/* ---- menu --------------------------------------------------------------- */
+
+.menu-bar {
+    -fx-background-color: -panel-raised;
+    -fx-border-color: -brass-dim;
+    -fx-border-width: 0 0 1px 0;
+}
+
+.menu-bar .label {
+    -fx-text-fill: -parchment;
+}
+
+.menu-bar > .container > .menu-button:hover,
+.menu-bar > .container > .menu-button:showing {
+    -fx-background-color: -brass-dim;
+}
+
+.context-menu {
+    -fx-background-color: -panel-raised;
+    -fx-border-color: -brass-dim;
+    -fx-border-width: 1px;
+}
+
+.menu-item .label {
+    -fx-text-fill: -parchment;
+}
+
+.menu-item:focused {
+    -fx-background-color: -brass-dim;
+}
+
+/* ---- sidebar ------------------------------------------------------------ */
+
+.sidebar {
+    -fx-background-color: -panel;
+    -fx-border-color: -brass-dim;
+    -fx-border-width: 0 0 0 2px;
+}
+
+.turn-label {
+    -fx-text-fill: -brass;
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+}
+
+.section-title {
+    -fx-text-fill: -brass;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+    -fx-padding: 8px 0 0 0;
+}
+
+.stat-caption {
+    -fx-text-fill: -parchment-dim;
+}
+
+.stat-value {
+    -fx-text-fill: -parchment;
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+}
+
+/* ---- buttons ------------------------------------------------------------ */
+
+.button {
+    -fx-background-color: -panel-raised;
+    -fx-text-fill: -parchment;
+    -fx-border-color: -brass-dim;
+    -fx-border-width: 1px;
+    -fx-background-radius: 3px;
+    -fx-border-radius: 3px;
+    -fx-padding: 6px 12px 6px 12px;
+    -fx-cursor: hand;
+}
+
+.button:hover {
+    -fx-background-color: -brass-dim;
+    -fx-text-fill: -soot;
+}
+
+.button:pressed {
+    -fx-background-color: -brass;
+    -fx-text-fill: -soot;
+}
+
+.button:disabled {
+    -fx-opacity: 0.45;
+    -fx-cursor: default;
+}
+
+.action-button {
+    -fx-alignment: CENTER_LEFT;
+}
+
+/* ---- lists -------------------------------------------------------------- */
+
+.list-view {
+    -fx-background-color: -panel-raised;
+    -fx-control-inner-background: -panel-raised;
+    -fx-border-color: -brass-dim;
+    -fx-border-width: 1px;
+}
+
+.list-cell {
+    -fx-background-color: transparent;
+    -fx-text-fill: -parchment;
+    -fx-padding: 3px 6px 3px 6px;
+}
+
+.list-cell .label {
+    -fx-text-fill: -parchment;
+}
+
+.list-cell:filled:selected {
+    -fx-background-color: -brass-dim;
+    -fx-text-fill: -soot;
+}
+
+/* ---- chat and status ---------------------------------------------------- */
+
+.chat-pane {
+    -fx-background-color: -panel;
+    -fx-border-color: -brass-dim;
+    -fx-border-width: 1px 0 0 0;
+}
+
+.text-field {
+    -fx-background-color: -parchment;
+    -fx-text-fill: -ink;
+    -fx-prompt-text-fill: #8d8267;
+    -fx-border-color: -brass-dim;
+    -fx-border-width: 1px;
+    -fx-background-radius: 3px;
+    -fx-border-radius: 3px;
+}
+
+.text-area {
+    -fx-background-color: -panel-raised;
+    -fx-border-color: -brass-dim;
+    -fx-border-width: 1px;
+    -fx-background-radius: 3px;
+    -fx-border-radius: 3px;
+    -fx-text-fill: -parchment;
+}
+
+.text-area .content {
+    -fx-background-color: -panel-raised;
+}
+
+.text-area .scroll-pane,
+.text-area .scroll-pane .viewport {
+    -fx-background-color: transparent;
+}
+
+.scroll-bar {
+    -fx-background-color: -panel;
+}
+
+.scroll-bar .thumb {
+    -fx-background-color: -brass-dim;
+    -fx-background-radius: 3px;
+}
+
+.scroll-bar .increment-button,
+.scroll-bar .decrement-button {
+    -fx-background-color: transparent;
+}
+
+.scroll-bar .increment-arrow,
+.scroll-bar .decrement-arrow {
+    -fx-background-color: -parchment-dim;
+}
+
+.status-bar {
+    -fx-background-color: -panel-raised;
+    -fx-border-color: -brass-dim;
+    -fx-border-width: 1px 0 0 0;
+}
+
+.status-bar .label {
+    -fx-text-fill: -parchment-dim;
+}
+
+.progress-indicator {
+    -fx-progress-color: -brass;
+}

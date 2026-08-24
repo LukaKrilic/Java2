@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ProgressIndicator?>
+<?import javafx.scene.control.SeparatorMenuItem?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.shape.Rectangle?>
+
+<AnchorPane minHeight="650.0" minWidth="1000.0" prefHeight="650.0" prefWidth="1000.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hr.algebra.brassbirmingham.controller.BrassBirminghamController">
+   <children>
+      <MenuBar minHeight="-Infinity" minWidth="-Infinity" styleClass="context-menu" stylesheets="@style.css" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <menus>
+          <Menu mnemonicParsing="false" text="Igra">
+            <items>
+              <MenuItem mnemonicParsing="false" onAction="#startNewGame" text="Nova igra" />
+                  <SeparatorMenuItem mnemonicParsing="false" />
+                  <MenuItem mnemonicParsing="false" onAction="#saveGame" text="Spremi" />
+                  <MenuItem mnemonicParsing="false" onAction="#loadGame" text="Ucitaj" />
+                <MenuItem fx:id="loadMovesItem" mnemonicParsing="false" onAction="#loadMoveHistory" text="Ucitaj poteze (XML)" />
+                  <SeparatorMenuItem mnemonicParsing="false" />
+                  <MenuItem mnemonicParsing="false" onAction="#generateDocumentation" text="Generiraj dokumentaciju" />
+                  <SeparatorMenuItem mnemonicParsing="false" />
+                  <MenuItem mnemonicParsing="false" onAction="#exitGame" text="Izlaz" />
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
+       <Pane fx:id="mapPane" styleClass="map-pane" AnchorPane.bottomAnchor="221.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="260.0" AnchorPane.topAnchor="29.0">
+         <children>
+             <Line id="link_stoke_coalbrookdale" endX="-141.0" endY="56.0" layoutX="314.0" layoutY="108.0" onMouseClicked="#linePressed" startX="-56.0" startY="-49.0" styleClass="route" />
+             <Line id="link_wolverhampton_coalbrookdale" endX="105.0" endY="-102.0" layoutX="241.0" layoutY="250.0" onMouseClicked="#linePressed" startX="-68.0" startY="-86.0" styleClass="route" />
+             <Line id="link_wolverhampton_stoke" endX="144.0" endY="55.0" layoutX="202.0" layoutY="93.0" onMouseClicked="#linePressed" startX="58.0" startY="-32.0" styleClass="route" />
+             <Line id="link_wolverhampton_walsall" endX="-299.0" endY="82.0" layoutX="645.0" layoutY="66.0" onMouseClicked="#linePressed" startX="-153.0" startY="36.0" styleClass="route" />
+             <Line id="link_birmingham_wolverhampton" endX="-343.0" endY="67.0" layoutX="691.0" layoutY="79.0" onMouseClicked="#linePressed" startX="-188.0" startY="176.0" styleClass="route" />
+             <Line id="link_birmingham_dudley" endX="-388.0" endY="188.0" layoutX="732.0" layoutY="66.0" onMouseClicked="#linePressed" startX="-240.5" startY="191.5" styleClass="route" />
+             <Line id="link_dudley_worcester" endX="-447.0" endY="173.0" layoutX="772.0" layoutY="83.0" onMouseClicked="#linePressed" startX="-336.0" startY="249.0" styleClass="route" />
+             <Line id="link_birmingham_coventry" endX="-283.0" endY="151.0" layoutX="788.0" layoutY="106.0" onMouseClicked="#linePressed" startX="-85.0" startY="165.0" styleClass="route" />
+             <Line id="link_birmingham_worcester" endX="-360.0" endY="235.0" layoutX="796.0" layoutY="114.0" onMouseClicked="#linePressed" startX="-296.0" startY="157.0" styleClass="route" />
+             <Line id="link_walsall_coventry" endX="-133.0" endY="122.0" layoutX="836.0" layoutY="149.0" onMouseClicked="#linePressed" startX="-344.0" startY="-47.0" styleClass="route" />
+             <Line id="link_birmingham_walsall" endX="-270.0" endY="133.0" layoutX="773.0" layoutY="122.0" onMouseClicked="#linePressed" startX="-281.0" startY="-20.0" styleClass="route" />
+             <Line id="link_wolverhampton_dudley" endX="-375.0" endY="80.0" layoutX="721.0" layoutY="68.0" onMouseClicked="#linePressed" startX="-395.0" startY="188.0" styleClass="route" />
+
+            <Circle id="city_stoke" fill="DODGERBLUE" layoutX="260.0" layoutY="61.0" onMouseClicked="#circlePressed" radius="21.0" stroke="BLACK" strokeType="INSIDE" styleClass="city" />
+            <Circle id="city_worcester" fill="DODGERBLUE" layoutX="436.0" layoutY="332.0" onMouseClicked="#circlePressed" radius="21.0" stroke="BLACK" strokeType="INSIDE" styleClass="city" />
+            <Circle id="city_coalbrookdale" fill="DODGERBLUE" layoutX="173.0" layoutY="164.0" onMouseClicked="#circlePressed" radius="21.0" stroke="BLACK" strokeType="INSIDE" styleClass="city" />
+            <Circle id="city_wolverhampton" fill="DODGERBLUE" layoutX="346.0" layoutY="148.0" onMouseClicked="#circlePressed" radius="21.0" stroke="BLACK" strokeType="INSIDE" styleClass="city" />
+            <Circle id="city_walsall" fill="DODGERBLUE" layoutX="492.0" layoutY="102.0" onMouseClicked="#circlePressed" radius="21.0" stroke="BLACK" strokeType="INSIDE" styleClass="city" />
+            <Circle id="city_birmingham" fill="DODGERBLUE" layoutX="503.0" layoutY="255.0" onMouseClicked="#circlePressed" radius="21.0" stroke="BLACK" strokeType="INSIDE" styleClass="city, market" />
+            <Circle id="city_coventry" fill="DODGERBLUE" layoutX="703.0" layoutY="271.0" onMouseClicked="#circlePressed" radius="21.0" stroke="BLACK" strokeType="INSIDE" styleClass="city" />
+            <Circle id="city_dudley" fill="DODGERBLUE" layoutX="325.0" layoutY="256.0" onMouseClicked="#circlePressed" radius="21.0" stroke="BLACK" strokeType="INSIDE" styleClass="city" />
+
+             <Rectangle id="slot_birmingham_0" height="13" layoutX="479.5" layoutY="215.0" onMouseClicked="#slotPressed" styleClass="slot, empty" width="13" />
+             <Rectangle id="slot_birmingham_1" height="13" layoutX="496.5" layoutY="215.0" onMouseClicked="#slotPressed" styleClass="slot, empty" width="13" />
+             <Rectangle id="slot_birmingham_2" height="13" layoutX="513.5" layoutY="215.0" onMouseClicked="#slotPressed" styleClass="slot, empty" width="13" />
+
+             <Rectangle id="slot_coventry_0" height="13" layoutX="688.0" layoutY="231.0" onMouseClicked="#slotPressed" styleClass="slot, empty" width="13" />
+             <Rectangle id="slot_coventry_1" height="13" layoutX="705.0" layoutY="231.0" onMouseClicked="#slotPressed" styleClass="slot, empty" width="13" />
+
+             <Rectangle id="slot_wolverhampton_0" height="13" layoutX="322.5" layoutY="108.0" onMouseClicked="#slotPressed" styleClass="slot, empty" width="13" />
+             <Rectangle id="slot_wolverhampton_1" height="13" layoutX="339.5" layoutY="108.0" onMouseClicked="#slotPressed" styleClass="slot, empty" width="13" />
+             <Rectangle id="slot_wolverhampton_2" height="13" layoutX="356.5" layoutY="108.0" onMouseClicked="#slotPressed" styleClass="slot, empty" width="13" />
+
+             <Rectangle id="slot_walsall_0" height="13" layoutX="477.0" layoutY="62.0" onMouseClicked="#slotPressed" styleClass="slot, empty" width="13" />
+             <Rectangle id="slot_walsall_1" height="13" layoutX="494.0" layoutY="62.0" onMouseClicked="#slotPressed" styleClass="slot, empty" width="13" />
+
+             <Rectangle id="slot_dudley_0" height="13" layoutX="310.0" layoutY="216.0" onMouseClicked="#slotPressed" styleClass="slot, empty" width="13" />
+             <Rectangle id="slot_dudley_1" height="13" layoutX="327.0" layoutY="216.0" onMouseClicked="#slotPressed" styleClass="slot, empty" width="13" />
+
+             <Rectangle id="slot_stoke_0" height="13" layoutX="236.5" layoutY="21.0" onMouseClicked="#slotPressed" styleClass="slot, empty" width="13" />
+             <Rectangle id="slot_stoke_1" height="13" layoutX="253.5" layoutY="21.0" onMouseClicked="#slotPressed" styleClass="slot, empty" width="13" />
+             <Rectangle id="slot_stoke_2" height="13" layoutX="270.5" layoutY="21.0" onMouseClicked="#slotPressed" styleClass="slot, empty" width="13" />
+
+             <Rectangle id="slot_coalbrookdale_0" height="13" layoutX="158.0" layoutY="124.0" onMouseClicked="#slotPressed" styleClass="slot, empty" width="13" />
+             <Rectangle id="slot_coalbrookdale_1" height="13" layoutX="175.0" layoutY="124.0" onMouseClicked="#slotPressed" styleClass="slot, empty" width="13" />
+
+             <Rectangle id="slot_worcester_0" height="13" layoutX="421.0" layoutY="292.0" onMouseClicked="#slotPressed" styleClass="slot, empty" width="13" />
+             <Rectangle id="slot_worcester_1" height="13" layoutX="438.0" layoutY="292.0" onMouseClicked="#slotPressed" styleClass="slot, empty" width="13" />
+
+            <Label layoutX="474.0" layoutY="277.0" mouseTransparent="true" styleClass="city-label" text="Birmingham" />
+            <Label layoutX="474.0" layoutY="131.0" mouseTransparent="true" styleClass="city-label" text="Walsall" />
+            <Label layoutX="313.0" layoutY="168.0" mouseTransparent="true" styleClass="city-label" text="Wolverhampton" />
+            <Label layoutX="245.0" layoutY="82.0" mouseTransparent="true" styleClass="city-label" text="Stoke" />
+            <Label layoutX="413.0" layoutY="353.0" mouseTransparent="true" styleClass="city-label" text="Worcester" />
+            <Label layoutX="133.0" layoutY="191.0" mouseTransparent="true" styleClass="city-label" text="Coalbrookdale" />
+            <Label layoutX="307.0" layoutY="284.0" mouseTransparent="true" styleClass="city-label" text="Dudley" />
+            <Label layoutX="682.0" layoutY="291.0" mouseTransparent="true" styleClass="city-label" text="Coventry" />
+         </children>
+      </Pane>
+      <VBox layoutX="900.0" layoutY="29.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="260.0" spacing="10.0" styleClass="sidebar" AnchorPane.bottomAnchor="221.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="29.0">
+         <children>
+            <Label fx:id="turnLbl" styleClass="turn-label" text="Tvoj potez" />
+            <HBox>
+               <children>
+                  <Label minHeight="-Infinity" minWidth="-Infinity" styleClass="stat-caption" text="Novac" />
+                   <Region prefWidth="0.0" HBox.hgrow="ALWAYS" />
+                  <Label fx:id="moneyLbl" minHeight="-Infinity" minWidth="-Infinity" styleClass="stat-value" text="0" />
+               </children>
+            </HBox>
+            <HBox layoutX="27.0" layoutY="58.0">
+               <children>
+                  <Label minHeight="-Infinity" minWidth="-Infinity" styleClass="stat-caption" text="Prihod" />
+                   <Region prefWidth="0.0" HBox.hgrow="ALWAYS" />
+                  <Label fx:id="incomeLbl" minHeight="-Infinity" minWidth="-Infinity" styleClass="stat-value" text="0" />
+               </children>
+            </HBox>
+            <HBox layoutX="27.0" layoutY="87.0">
+               <children>
+                  <Label minHeight="-Infinity" minWidth="-Infinity" styleClass="stat-caption" text="Runda" />
+                   <Region prefWidth="0.0" HBox.hgrow="ALWAYS" />
+                  <Label fx:id="roundsLbl" minHeight="-Infinity" minWidth="-Infinity" styleClass="stat-value" text="1/10" />
+               </children>
+            </HBox>
+            <Label styleClass="section-title" text="AKCIJE" />
+            <Button fx:id="loanBtn" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#onLoan" styleClass="action-button" text="Zajam" />
+            <Button fx:id="skipBtn" layoutX="27.0" layoutY="177.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#onSkip" styleClass="action-button" text="Preskoci" />
+            <Label styleClass="section-title" text="Dnevnik poteza" />
+            <ListView fx:id="logList" prefHeight="100.0" VBox.vgrow="ALWAYS" />
+         </children>
+         <padding>
+            <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+         </padding>
+      </VBox>
+      <VBox layoutY="429.0" prefHeight="221.0" prefWidth="1000.0" styleClass="chat-pane" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+         <children>
+            <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="5.0" styleClass="chat-pane" VBox.vgrow="ALWAYS">
+               <children>
+                  <Label styleClass="section-title" text="RAZGOVOR" />
+                  <TextArea fx:id="chatList" editable="false" focusTraversable="false" prefHeight="112.0" wrapText="true" VBox.vgrow="ALWAYS" />
+               </children>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+               <padding>
+                  <Insets bottom="10.0" left="15.0" right="15.0" top="10.0" />
+               </padding>
+            </VBox>
+            <HBox spacing="8.0">
+               <children>
+                  <TextField fx:id="chatInput" onAction="#onSendChat" promptText="Napisi poruku..." HBox.hgrow="ALWAYS" />
+                  <Button fx:id="chatSendBtn" mnemonicParsing="false" onAction="#onSendChat" text="Posalji" />
+               </children>
+               <padding>
+                  <Insets bottom="10.0" left="15.0" right="15.0" />
+               </padding>
+            </HBox>
+             <HBox spacing="10.0" styleClass="status-bar">
+                 <children>
+                     <Label fx:id="statusLbl" text="Spremno" />
+                     <Region prefWidth="0.0" HBox.hgrow="ALWAYS" />
+                 </children>
+               <padding>
+                  <Insets bottom="6.0" left="15.0" right="15.0" top="6.0" />
+               </padding>
+            </HBox>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>
