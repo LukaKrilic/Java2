@@ -25,7 +25,6 @@ import java.util.logging.Logger;
 public class BrassBirminghamApplication extends Application {
 
     public static PlayerType playerType;
-    public static int opponentPort;
     //veci od 1024
     public static final int PORT_PLAYER_1 = ConfigurationReader.getIntegerValueForKey(ConfigurationKey.PLAYER_ONE_SERVER_PORT);
     public static final int PORT_PLAYER_2 = ConfigurationReader.getIntegerValueForKey(ConfigurationKey.PLAYER_TWO_SERVER_PORT);
@@ -43,10 +42,6 @@ public class BrassBirminghamApplication extends Application {
         stage.show();
 
         if (playerType != PlayerType.SINGLE_PLAYER) {
-            opponentPort = playerType == PlayerType.PLAYER_1 ? PORT_PLAYER_2 : PORT_PLAYER_1;
-        }
-
-        if (playerType != PlayerType.SINGLE_PLAYER) {
             Runnable server = playerType == PlayerType.PLAYER_1
                     ? this::acceptRequestsPlayerOne
                     : this::acceptRequestsPlayerTwo;
@@ -59,10 +54,6 @@ public class BrassBirminghamApplication extends Application {
     @Override
     public void stop() {
         System.exit(0);
-    }
-
-    public static int localPort() {
-        return playerType == PlayerType.PLAYER_1 ? PORT_PLAYER_1 : PORT_PLAYER_2;
     }
 
     private void acceptRequestsPlayerTwo() {
@@ -133,15 +124,25 @@ public class BrassBirminghamApplication extends Application {
         launch();
 
     }
-    public static void sendGameState(GameState gameState) {
-        try (Socket clientSocket = new Socket(HOST, opponentPort)) {
-            System.err.printf("[%s] Connected to opponent on port %d%n", playerType, opponentPort);
+    public static void sendRequestPlayerOne(GameState gameState) {
+        try(Socket clientSocket = new Socket(HOST, PORT_PLAYER_2)){
+            System.err.printf("[%s] Connected to server at %s:%d%n", playerType, clientSocket.getInetAddress(), clientSocket.getPort());
+
             sendSerializableRequest(clientSocket, gameState);
-        } catch (IOException | ClassNotFoundException e) {
-            Logger.getLogger(BrassBirminghamApplication.class.getName())
-                    .log(Level.SEVERE, "Send failed", e);
-            Platform.runLater(() -> DialogUtils.showAlertDialog("Mreza",
-                    "Protivnik nije dostupan.", Alert.AlertType.ERROR));
+
+        }catch (IOException | ClassNotFoundException e){
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static void sendRequestPlayerTwo(GameState gameState) {
+        try(Socket clientSocket = new Socket(HOST, PORT_PLAYER_1)){
+            System.err.printf("[%s] Connected to server at %s:%d%n", playerType, clientSocket.getInetAddress(), clientSocket.getPort());
+
+            sendSerializableRequest(clientSocket, gameState);
+
+        }catch (IOException | ClassNotFoundException e){
+            throw new RuntimeException(e);
         }
     }
 

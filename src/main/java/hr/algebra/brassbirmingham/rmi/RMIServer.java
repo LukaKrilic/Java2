@@ -17,17 +17,10 @@ public class RMIServer {
     public static void start() {
         try {
             Registry registry = LocateRegistry.createRegistry(RMI_PORT);
-
             ChatRemoteService chatRemoteService = new ChatRemoteServiceImpl();
             ChatRemoteService skeleton = (ChatRemoteService) UnicastRemoteObject.exportObject(chatRemoteService, RANDOM_PORT_HINT);
             registry.rebind(ChatRemoteService.REMOTE_OBJECT_NAME, skeleton);
-
-            LobbyRemoteService lobbyRemoteService = new LobbyRemoteServiceImpl();
-            LobbyRemoteService lobbySkeleton = (LobbyRemoteService)
-                    UnicastRemoteObject.exportObject(lobbyRemoteService, RANDOM_PORT_HINT);
-            registry.rebind(LobbyRemoteService.REMOTE_OBJECT_NAME, lobbySkeleton);
-
-            Logger.getLogger(RMIServer.class.getName()).info("Chat and lobby registered in RMI registry" );
+            Logger.getLogger(RMIServer.class.getName()).info("Object registered in RMI registry" );
         } catch (RemoteException e) {
             Logger.getLogger(RMIServer.class.getName())
                     .info("RMI registry already running, joining existing one");
