@@ -361,8 +361,8 @@ public class BrassBirminghamController {
     }
 
     public void saveGame() {
-        GameUtils.save(viewModel.getEngine().getState());
         try {
+            GameUtils.save(viewModel.getEngine().getState());
             DialogUtils.showAlertDialog("Spremanje", "Igra je spremljena.",
                     Alert.AlertType.INFORMATION);
         } catch (RuntimeException e) {
@@ -372,12 +372,17 @@ public class BrassBirminghamController {
     }
 
     public void loadGame() {
-        XmlUtils.deleteMoveHistory();
-        GameState state = GameUtils.load();
-        startSession(state);
-        broadcast(state);
-        DialogUtils.showAlertDialog("Učitavanje", "Igra je učitana.",
-                Alert.AlertType.INFORMATION);
+        try {
+            XmlUtils.deleteMoveHistory();
+            GameState state = GameUtils.load();
+            startSession(state);
+            broadcast(state);
+            DialogUtils.showAlertDialog("Učitavanje", "Igra je učitana.",
+                    Alert.AlertType.INFORMATION);
+        } catch (Exception e) {
+            DialogUtils.showAlertDialog("Greška prilikom učitavanja!", "Došlo je do greške prilikom učitavanja igre: " + e.getMessage(),
+                    Alert.AlertType.ERROR);
+        }
     }
 
     public void generateDocumentation() {

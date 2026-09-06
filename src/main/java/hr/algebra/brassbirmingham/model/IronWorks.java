@@ -1,6 +1,12 @@
 package hr.algebra.brassbirmingham.model;
 
+import java.io.Serial;
+
 public class IronWorks extends Industry {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
+
     public IronWorks(Player owner, Slot slot) {
         super(owner, slot);
     }
