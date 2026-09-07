@@ -10,13 +10,6 @@ public class SaveTheLastGameMoveThread extends AbstractTheLastGameMoveThread imp
         this.gameAction = gameAction;
     }
 
-    public GameAction getGameAction() {
-        return gameAction;
-    }
-    public void setGameAction(GameAction gameAction) {
-        this.gameAction = gameAction;
-    }
-
     @Override
     public void run() {
         saveTheLastGameMove(gameAction);

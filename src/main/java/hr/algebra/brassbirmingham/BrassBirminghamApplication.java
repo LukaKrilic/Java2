@@ -25,7 +25,6 @@ import java.util.logging.Logger;
 public class BrassBirminghamApplication extends Application {
 
     public static PlayerType playerType;
-    //veci od 1024
     public static final int PORT_PLAYER_1 = ConfigurationReader.getIntegerValueForKey(ConfigurationKey.PLAYER_ONE_SERVER_PORT);
     public static final int PORT_PLAYER_2 = ConfigurationReader.getIntegerValueForKey(ConfigurationKey.PLAYER_TWO_SERVER_PORT);
     public static final String HOST = ConfigurationReader.getStringValueForKey(ConfigurationKey.HOST_NAME);

@@ -28,8 +28,6 @@ public class GameEngine {
         return ApplyResult.ok(message);
     }
 
-    // ---------- validation ----------
-
     private String validate(GameAction action) {
         if (state.getPhase() != GamePhase.IN_PROGRESS) {
             return "Igra je zavrsena.";
@@ -109,8 +107,6 @@ public class GameEngine {
         return findConnectedUnflippedMine(city).isPresent() ? 0 : GameRules.MARKET_COAL_PRICE;
     }
 
-    // ---------- performing ----------
-
     private String perform(GameAction action) {
         return switch (action) {
             case BuildAction a -> performBuild(a);
@@ -172,8 +168,6 @@ public class GameEngine {
         industry.getOwner().addIncome(industry.income());
     }
 
-    // ---------- turn and round ----------
-
     private void endTurn() {
         if (isDoublePass()) {
             state.setPhase(GamePhase.FINISHED);
@@ -206,7 +200,6 @@ public class GameEngine {
         }
     }
 
-    // ---------- network and reachability ----------
 
     private boolean canBuildIn(Player player, City city) {
         Set<City> network = networkOf(player);
